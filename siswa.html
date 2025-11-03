@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+  <h1>data siswa</h1>
+  <!-- menampilkan data siswa -->
+  <p id="daftar"></p>
+  
+  <script type="module">
+    //impor fungsi atau library atau module dari file main.js
+    import { daftarsiswa } from "./main.js"
+    
+    // memanpilkan daftar siswa
+    let datasiswa = await daftarsiswa()
+    let teks = ''
+    
+    // loop data siswa
+    datasiswa.forEach((siswa) => {
+      teks += 'nama :' + siswa.nama + ',kelas:' + siswa.kelas
+    })
+    
+    document.getElementById('daftar').innerHTML = teks
+  </script>
+</body>
+
+</html>

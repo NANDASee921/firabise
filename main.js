@@ -2,28 +2,28 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js'
 
 //menambah/mengimpor library firestore
-import{
-  getFirestore,
-  collection,
-  doc,
-  getDocs,
-  getDoc,
-  addDoc,
-  deleteDoc,
-  updateDoc,
-  query,
-  orderBy
+import {
+    getFirestore,
+    collection,
+    doc,
+    getDocs,
+    getDoc,
+    addDoc,
+    deleteDoc,
+    updateDoc,
+    query,
+    orderBy
 } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
 
 
 // menambah konfigurasi 
 const firebaseConfig = {
-  apiKey: "AIzaSyBWzqA3FYUA3m3Y_C1c8fgIERYQzod6WwU",
-  authDomain: "insancemerlang-75559.firebaseapp.com",
-  projectId: "insancemerlang-75559",
-  storageBucket: "insancemerlang-75559.firebasestorage.app",
-  messagingSenderId: "276076065109",
-  appId: "1:276076065109:web:55214f37cb4c9c7357bfdc"
+    apiKey: "AIzaSyBWzqA3FYUA3m3Y_C1c8fgIERYQzod6WwU",
+    authDomain: "insancemerlang-75559.firebaseapp.com",
+    projectId: "insancemerlang-75559",
+    storageBucket: "insancemerlang-75559.firebasestorage.app",
+    messagingSenderId: "276076065109",
+    appId: "1:276076065109:web:55214f37cb4c9c7357bfdc"
 };
 
 // insialisasi firabase 
@@ -33,16 +33,15 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app)
 
 //
-export async function tambahData () {
+export async function tambahData() {
     try {
         // menyimpan data ke firestore
         const referensiDokumen = await addDoc(collection(db, "siswa"),
-            {
-                nama: 'Agus',
-                kelas: 'XI RPL'
-            }
-        )
-
+        {
+            nama: 'Agus',
+            kelas: 'XI RPL'
+        })
+        
         // menampilkan pesan berhasil
         console.log('Berhasil menambah data siswa')
     } catch (error) {
@@ -51,3 +50,27 @@ export async function tambahData () {
     }
 }
 
+// fungsi untuk mengambil data siswa dari firestore
+export async function daftarsiswa() {
+    const refdokumen = collection(db, "siswa")
+    
+    // melakukan permintaan atau query ke refensi daftar dokumen 
+    const kueri = query(refdokumen, orderBy("nama"))
+    
+    //menampung data cuplikan kueri
+    const cuplikankueri = await getDocs(kueri)
+    
+    //tampung hasil kueri
+    let hasilkueri = []
+    
+    //loop cuplikan kueri,simpan kevariabel hasil kueri
+    cuplikankueri.forEach((dokumen) => {
+        hasilkueri.push({
+            nama: dokumen.data().nama,
+            kelas: dokumen.data().kelas,
+        })
+    })
+    
+    //kembalikan nilai daftar siswa kepemanggil fungsi
+    return hasilkueri
+}
